@@ -3,7 +3,8 @@ import {useParams} from "react-router-dom";
 import axios from "../api/axios";
 import {useDispatch} from "react-redux";
 import {addToCart} from "../features/cart/cartSlice";
-import { useNavigate } from "react-router-dom";
+import {useNavigate} from "react-router-dom";
+import {addToWishlist} from "../features/wishlist/wishlistSlice";
 
 export default function ProductDetails() {
   const {id} = useParams();
@@ -29,8 +30,11 @@ export default function ProductDetails() {
       <p>{product.description}</p>
       <p>{product.category}</p>
       <p>Stock: {product.stock}</p>
-      <button onClick={() => { dispatch(addToCart(product)); navigate("/cart"); }}>
+    <button onClick={() =>{dispatch(addToCart(product)); alert("Added to cart");}}>
         Add to Cart
+      </button>
+      <button onClick={() => {dispatch(addToWishlist(product)); alert("Added to wishlist");}}>
+        Add to Wishlist
       </button>
     </div>
   );
