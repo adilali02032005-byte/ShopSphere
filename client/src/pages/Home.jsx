@@ -18,7 +18,7 @@ export default function Home() {
   }, []);
 
   const filteredProducts = products.filter((product) =>
-    product.name.toLowerCase().includes(search.toLowerCase()) &&
+    product.name?.toLowerCase().includes(search.toLowerCase()) &&
     (category === "" || product.category === category)
   );
 
