@@ -1,5 +1,6 @@
 import {useSelector, useDispatch} from "react-redux";
 import {removeFromCart, increaseQty, decreaseQty} from "../features/cart/cartSlice";
+import {Link} from "react-router-dom";
 
 export default function Cart() {
   const items = useSelector((state) => state.cart.items);
@@ -13,6 +14,9 @@ export default function Cart() {
     <div>
       <h1>Cart</h1>
       <h2>Total: ₹{total}</h2>
+      <Link to="/checkout">
+        <button>Proceed to Checkout</button>
+      </Link>
       {items.map((item) => (
         <div key={item._id}>
           <h3>{item.name}</h3>
