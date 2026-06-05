@@ -7,6 +7,7 @@ import Cart from "./pages/Cart";
 import Wishlist from "./pages/Wishlist";
 import Orders from "./pages/Orders";
 import Checkout from "./pages/Checkout";
+import Admin from "./pages/Admin";
 
 export default function App() {
   return (
@@ -20,6 +21,7 @@ export default function App() {
         <Route path="/wishlist" element={<Wishlist />} />
         <Route path = "/orders" element={<Orders />} />
         <Route path = "/checkout" element={<Checkout />} />
+        <Route path = "/admin" element={<Admin />} />
       </Routes>
     </BrowserRouter>
   );
