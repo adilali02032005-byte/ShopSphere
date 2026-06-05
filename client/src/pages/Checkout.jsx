@@ -4,6 +4,7 @@ import { useNavigate } from "react-router-dom";
 import axios from "../api/axios";
 
 export default function Checkout() {
+  const user = useSelector((state) => state.auth.user);
   const items = useSelector((state) => state.cart.items);
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -12,28 +13,33 @@ export default function Checkout() {
     0,
   );
 
-  const placeOrder = async() => {
+  const placeOrder = async () => {
     await axios.post("/orders", {
-        items: items.map((item)=>({
-            productId:item._id,
-            name: item._name,
-            price: item._price,
-            quantity: item._quantity,
-        })),
-        totalAmount,
+      user: user._id,
+      items: items.map((item) => ({
+        productId: item._id,
+        name: item.name,
+        price: item.price,
+        quantity: item.quantity,
+      })),
+      totalAmount,
     });
     dispatch(clearCart());
     alert("Order placed successfully!");
     navigate("/orders");
   };
 
-  return(
+  if (!user) {
+    alert("Please login first");
+    navigate("/login");
+    return;
+  }
+
+  return (
     <div>
-        <h1>Checkout</h1>
-        <h2>Total: ₹{totalAmount}</h2>
-        <button onClick={placeOrder}>
-            Place Order
-        </button>
+      <h1>Checkout</h1>
+      <h2>Total: ₹{totalAmount}</h2>
+      <button onClick={placeOrder}>Place Order</button>
     </div>
   );
 }
