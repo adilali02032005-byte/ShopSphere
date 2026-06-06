@@ -14,19 +14,26 @@ export default function Checkout() {
   );
 
   const placeOrder = async () => {
-    await axios.post("/orders", {
-      user: user._id,
-      items: items.map((item) => ({
-        productId: item._id,
-        name: item.name,
-        price: item.price,
-        quantity: item.quantity,
-      })),
-      totalAmount,
-    });
-    dispatch(clearCart());
-    alert("Order placed successfully!");
-    navigate("/orders");
+    try {
+      await axios.post("/orders", {
+        user: user._id,
+        items: items.map((item) => ({
+          productId: item._id,
+          name: item.name,
+          price: item.price,
+          quantity: item.quantity,
+        })),
+        totalAmount,
+      });
+
+      dispatch(clearCart());
+
+      alert("Order placed successfully!");
+
+      navigate("/orders");
+    } catch (error) {
+      alert(error.response?.data?.message || "Failed to place order");
+    }
   };
 
   if (!user) {
