@@ -5,13 +5,14 @@ import ProductCard from "../components/ProductCard";
 
 export default function Home() {
   const [products, setProducts] = useState([]);
-  const [search, setSearch] = useState("");
+  const [setSearch] = useState("");
   const [setCategory] = useState("");
   const [hoveredId, setHoveredId] = useState(null);
 
   const location = useLocation();
   const query = new URLSearchParams(location.search);
   const category = query.get("category") || "";
+  const search = query.get("search") || "";
 
   useEffect(() => {
     const fetchProducts = async () => {

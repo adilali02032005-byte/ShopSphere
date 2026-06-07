@@ -1,4 +1,4 @@
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useNavigate, useLocation } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import { useState, useEffect, useRef } from "react";
 import { FaShoppingCart, FaHeart, FaBox, FaSignOutAlt } from "react-icons/fa";
@@ -9,7 +9,10 @@ export default function Navbar() {
   const user = useSelector((state) => state.auth.user);
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const location = useLocation();
+  const isHome = location.pathname === "/";
   const isAdmin = user?.role === "admin";
+  const [search, setSearch] = useState("");
 
   const [open, setOpen] = useState(false);
   const dropdownRef = useRef();
@@ -26,7 +29,6 @@ export default function Navbar() {
     navigate("/login");
   };
 
-  // CLOSE DROPDOWN ON OUTSIDE CLICK
   useEffect(() => {
     const handleClickOutside = (e) => {
       if (dropdownRef.current && !dropdownRef.current.contains(e.target)) {
@@ -46,13 +48,23 @@ export default function Navbar() {
       </Link>
 
       {/* SEARCH */}
-      {!isAdmin && (
-        <input style={styles.search} placeholder="Search products..." />
+      {!isAdmin && isHome && (
+        <input
+          style={styles.search}
+          placeholder="Search products..."
+          value={search}
+          onChange={(e) => setSearch(e.target.value)}
+          onKeyDown={(e) => {
+            if (e.key === "Enter") {
+              navigate(`/?search=${search}`);
+            }
+          }}
+        />
       )}
 
       {/* CATEGORY */}
-      {!isAdmin && (
-        <div style={styles.dropdown}>
+      {!isAdmin && isHome && (
+        <div style={styles.dropdown} ref={dropdownRef}>
           <button style={styles.dropBtn} onClick={() => setOpen(!open)}>
             Categories ▾
           </button>
@@ -62,7 +74,7 @@ export default function Navbar() {
               {categories.map((cat) => (
                 <div
                   key={cat}
-                  style={styles.item}
+                  style={styles.menuItem}
                   onClick={() => handleSelect(cat)}
                 >
                   {cat}
@@ -146,6 +158,7 @@ const styles = {
 
   dropdown: {
     position: "relative",
+    zIndex: 1001,
   },
 
   dropBtn: {
