@@ -7,6 +7,7 @@ export default function Home() {
   const [products, setProducts] = useState([]);
   const [search, setSearch] = useState("");
   const [setCategory] = useState("");
+  const [hoveredId, setHoveredId] = useState(null);
 
   const location = useLocation();
   const query = new URLSearchParams(location.search);
@@ -34,13 +35,28 @@ export default function Home() {
       <div style={styles.grid}>
         {filteredProducts.length > 0 ? (
           filteredProducts.map((product) => (
-            <Link
+            <div
               key={product._id}
-              to={`/product/${product._id}`}
-              style={{ textDecoration: "none", color: "inherit" }}
+              onMouseEnter={() => setHoveredId(product._id)}
+              onMouseLeave={() => setHoveredId(null)}
+              style={{
+                transform:
+                  hoveredId === product._id ? "scale(1.03)" : "scale(1)",
+                transition: "0.2s ease",
+                boxShadow:
+                  hoveredId === product._id
+                    ? "0 4px 15px rgba(0,0,0,0.2)"
+                    : "none",
+                borderRadius: "8px",
+              }}
             >
-              <ProductCard product={product} />
-            </Link>
+              <Link
+                to={`/product/${product._id}`}
+                style={{ textDecoration: "none", color: "inherit" }}
+              >
+                <ProductCard product={product} />
+              </Link>
+            </div>
           ))
         ) : (
           <p style={{ padding: "10px" }}>No products found</p>

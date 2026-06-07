@@ -1,12 +1,7 @@
 import { Link, useNavigate } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import { useState, useEffect, useRef } from "react";
-import {
-  FaShoppingCart,
-  FaHeart,
-  FaBox,
-  FaSignOutAlt,
-} from "react-icons/fa";
+import { FaShoppingCart, FaHeart, FaBox, FaSignOutAlt } from "react-icons/fa";
 import { logout } from "../features/auth/authSlice";
 
 export default function Navbar() {
@@ -14,6 +9,7 @@ export default function Navbar() {
   const user = useSelector((state) => state.auth.user);
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const isAdmin = user?.role === "admin";
 
   const [open, setOpen] = useState(false);
   const dropdownRef = useRef();
@@ -39,8 +35,7 @@ export default function Navbar() {
     };
 
     document.addEventListener("mousedown", handleClickOutside);
-    return () =>
-      document.removeEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
 
   return (
@@ -51,31 +46,32 @@ export default function Navbar() {
       </Link>
 
       {/* SEARCH */}
-      <input style={styles.search} placeholder="Search products..." />
+      {!isAdmin && (
+        <input style={styles.search} placeholder="Search products..." />
+      )}
 
       {/* CATEGORY */}
-      <div style={styles.dropdown} ref={dropdownRef}>
-        <button
-          style={styles.dropBtn}
-          onClick={() => setOpen(!open)}
-        >
-          Categories ▾
-        </button>
+      {!isAdmin && (
+        <div style={styles.dropdown}>
+          <button style={styles.dropBtn} onClick={() => setOpen(!open)}>
+            Categories ▾
+          </button>
 
-        {open && (
-          <div style={styles.menu}>
-            {categories.map((cat) => (
-              <div
-                key={cat}
-                style={styles.menuItem}
-                onClick={() => handleSelect(cat)}
-              >
-                {cat}
-              </div>
-            ))}
-          </div>
-        )}
-      </div>
+          {open && (
+            <div style={styles.menu}>
+              {categories.map((cat) => (
+                <div
+                  key={cat}
+                  style={styles.item}
+                  onClick={() => handleSelect(cat)}
+                >
+                  {cat}
+                </div>
+              ))}
+            </div>
+          )}
+        </div>
+      )}
 
       {/* ACTIONS */}
       <div style={styles.icons}>
