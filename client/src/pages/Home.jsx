@@ -1,12 +1,16 @@
-import {useEffect, useState} from "react";
+import { useEffect, useState } from "react";
 import axios from "../api/axios";
-import {Link} from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import ProductCard from "../components/ProductCard";
 
 export default function Home() {
   const [products, setProducts] = useState([]);
   const [search, setSearch] = useState("");
-  const [category, setCategory] = useState("");
+  const [setCategory] = useState("");
+
+  const location = useLocation();
+  const query = new URLSearchParams(location.search);
+  const category = query.get("category") || "";
 
   useEffect(() => {
     const fetchProducts = async () => {
@@ -17,38 +21,40 @@ export default function Home() {
     fetchProducts();
   }, []);
 
-  const filteredProducts = products.filter((product) =>
-    product.name?.toLowerCase().includes(search.toLowerCase()) &&
-    (category === "" || product.category === category)
+  const filteredProducts = products.filter(
+    (product) =>
+      product.name?.toLowerCase().includes(search.toLowerCase()) &&
+      (!category || product.category === category),
   );
 
   return (
     <div>
+      <h1 style={{ padding: "10px" }}>Products</h1>
 
-      <input
-        type="text"
-        placeholder="Search products"
-        value={search}
-        onChange={(e) => setSearch(e.target.value)}
-      />
-
-      <select
-        value={category}
-        onChange={(e) => setCategory(e.target.value)}
-        >
-          <option value="">All Categories</option>
-          <option value="Footwear">Footwear</option>
-          <option value="Electronics">Electronics</option>
-          <option value="Accessories">Accessories</option>
-      </select>
-
-      <h1>Products</h1>
-
-      {filteredProducts.map((product) => (
-        <Link key={product._id} to={`/product/${product._id}`}>
-          <ProductCard product={product} />
-        </Link>
-      ))}
+      <div style={styles.grid}>
+        {filteredProducts.length > 0 ? (
+          filteredProducts.map((product) => (
+            <Link
+              key={product._id}
+              to={`/product/${product._id}`}
+              style={{ textDecoration: "none", color: "inherit" }}
+            >
+              <ProductCard product={product} />
+            </Link>
+          ))
+        ) : (
+          <p style={{ padding: "10px" }}>No products found</p>
+        )}
+      </div>
     </div>
   );
 }
+
+const styles = {
+  grid: {
+    display: "grid",
+    gridTemplateColumns: "repeat(4, 1fr)",
+    gap: "15px",
+    padding: "10px",
+  },
+};

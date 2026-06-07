@@ -23,15 +23,10 @@ export default function Admin() {
   }, []);
 
   const handleChange = (e) => {
-    setFormData({
-      ...formData,
-      [e.target.name]: e.target.value,
-    });
+    setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
-  const createProduct = async () => {
-    await axios.post("/products", formData);
-
+  const resetForm = () => {
     setFormData({
       name: "",
       price: "",
@@ -39,23 +34,18 @@ export default function Admin() {
       category: "",
       stock: "",
     });
+    setEditingId(null);
+  };
 
+  const createProduct = async () => {
+    await axios.post("/products", formData);
+    resetForm();
     fetchProducts();
   };
 
   const updateProduct = async () => {
     await axios.put(`/products/${editingId}`, formData);
-
-    setEditingId(null);
-
-    setFormData({
-      name: "",
-      price: "",
-      description: "",
-      category: "",
-      stock: "",
-    });
-
+    resetForm();
     fetchProducts();
   };
 
@@ -65,82 +55,159 @@ export default function Admin() {
   };
 
   return (
-    <div>
+    <div style={styles.page}>
       <h1>Admin Panel</h1>
 
-      <h2>Add Product</h2>
+      <div style={styles.layout}>
+        {/* FORM */}
+        <div style={styles.formBox}>
+          <h2>{editingId ? "Edit Product" : "Add Product"}</h2>
 
-      <input
-        name="name"
-        placeholder="Name"
-        value={formData.name}
-        onChange={handleChange}
-      />
-
-      <input
-        name="price"
-        placeholder="Price"
-        value={formData.price}
-        onChange={handleChange}
-      />
-
-      <input
-        name="description"
-        placeholder="Description"
-        value={formData.description}
-        onChange={handleChange}
-      />
-
-      <input
-        name="category"
-        placeholder="Category"
-        value={formData.category}
-        onChange={handleChange}
-      />
-
-      <input
-        name="stock"
-        placeholder="Stock"
-        value={formData.stock}
-        onChange={handleChange}
-      />
-
-      {editingId ? (
-        <button onClick={updateProduct}>Update Product</button>
-      ) : (
-        <button onClick={createProduct}>Create Product</button>
-      )}
-
-      <hr />
-
-      <h2>Inventory</h2>
-
-      {products.map((product) => (
-        <div key={product._id}>
-          <h3>{product.name}</h3>
-
-          <p>₹{product.price}</p>
-
-          <p>Stock: {product.stock}</p>
+          <div style={styles.inputGroup}>
+            {["name", "price", "description", "category", "stock"].map(
+              (field) => (
+                <input
+                  key={field}
+                  name={field}
+                  placeholder={field.toUpperCase()}
+                  value={formData[field]}
+                  onChange={handleChange}
+                  style={styles.input}
+                />
+              ),
+            )}
+          </div>
 
           <button
-            onClick={() => {
-              setEditingId(product._id);
-              setFormData({
-                name: product.name,
-                price: product.price,
-                description: product.description,
-                category: product.category,
-                stock: product.stock,
-              });
-            }}
+            style={styles.primaryBtn}
+            onClick={editingId ? updateProduct : createProduct}
           >
-            Edit
+            {editingId ? "Update Product" : "Create Product"}
           </button>
-
-          <button onClick={() => deleteProduct(product._id)}>Delete</button>
         </div>
-      ))}
+
+        {/* INVENTORY */}
+        <div style={styles.listBox}>
+          <h2>Inventory</h2>
+
+          {products.length === 0 ? (
+            <p style={{ textAlign: "center" }}>No products in inventory</p>
+          ) : (
+            products.map((product) => (
+              <div key={product._id} style={styles.card}>
+                <div>
+                  <h3 style={{ margin: 0 }}>{product.name}</h3>
+                  <p>₹{product.price}</p>
+                  <p>Stock: {product.stock}</p>
+                </div>
+
+                <div style={styles.actions}>
+                  <button
+                    style={styles.editBtn}
+                    onClick={() => {
+                      setEditingId(product._id);
+                      setFormData(product);
+                    }}
+                  >
+                    Edit
+                  </button>
+
+                  <button
+                    style={styles.deleteBtn}
+                    onClick={() => deleteProduct(product._id)}
+                  >
+                    Delete
+                  </button>
+                </div>
+              </div>
+            ))
+          )}
+        </div>
+      </div>
     </div>
   );
 }
+
+const styles = {
+  page: {
+    padding: "20px",
+  },
+
+  layout: {
+    display: "flex",
+    gap: "20px",
+    marginTop: "20px",
+  },
+
+  formBox: {
+    flex: 1,
+    background: "white",
+    padding: "15px",
+    borderRadius: "6px",
+    border: "1px solid #ddd",
+    height: "fit-content",
+    boxSizing: "border-box",
+  },
+
+  listBox: {
+    flex: 2,
+  },
+
+  input: {
+    width: "100%",
+    padding: "10px",
+    border: "1px solid #ccc",
+    borderRadius: "4px",
+    boxSizing: "border-box",
+  },
+  primaryBtn: {
+    width: "100%",
+    padding: "10px",
+    background: "#2874f0",
+    color: "white",
+    border: "none",
+    borderRadius: "4px",
+    cursor: "pointer",
+    marginTop: "15px",
+  },
+
+  card: {
+    display: "flex",
+    justifyContent: "space-between",
+    alignItems: "center",
+    background: "white",
+    padding: "12px",
+    borderRadius: "6px",
+    border: "1px solid #ddd",
+    marginBottom: "10px",
+  },
+
+  actions: {
+    display: "flex",
+    gap: "10px",
+  },
+
+  editBtn: {
+    padding: "6px 10px",
+    background: "#ff9800",
+    border: "none",
+    color: "white",
+    borderRadius: "4px",
+    cursor: "pointer",
+  },
+
+  deleteBtn: {
+    padding: "6px 10px",
+    background: "#e53935",
+    border: "none",
+    color: "white",
+    borderRadius: "4px",
+    cursor: "pointer",
+  },
+
+  inputGroup: {
+    display: "flex",
+    flexDirection: "column",
+    gap: "10px",
+  },
+};

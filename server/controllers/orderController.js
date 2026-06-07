@@ -53,7 +53,7 @@ const updateOrderStatus = async (req, res) => {
 
 const getAllOrders = async (req, res) => {
   try {
-    const orders = await Order.find();
+    const orders = await Order.find().populate("user", "name");
 
     res.json(orders);
   } catch (error) {
