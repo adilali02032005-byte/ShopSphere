@@ -5,8 +5,6 @@ import ProductCard from "../components/ProductCard";
 
 export default function Home() {
   const [products, setProducts] = useState([]);
-  const [setSearch] = useState("");
-  const [setCategory] = useState("");
   const [hoveredId, setHoveredId] = useState(null);
 
   const location = useLocation();
@@ -70,7 +68,7 @@ export default function Home() {
 const styles = {
   grid: {
     display: "grid",
-    gridTemplateColumns: "repeat(4, 1fr)",
+    gridTemplateColumns: "repeat(auto-fit, minmax(220px, 1fr))",
     gap: "15px",
     padding: "10px",
   },

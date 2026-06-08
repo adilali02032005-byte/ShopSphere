@@ -131,6 +131,8 @@ export default function Navbar() {
 const styles = {
   nav: {
     display: "flex",
+    flexWrap: "wrap",
+    gap: "10px",
     alignItems: "center",
     justifyContent: "space-between",
     background: "#2874f0",
@@ -149,7 +151,8 @@ const styles = {
   },
 
   search: {
-    width: "40%",
+    width: "100%",
+    maxWidth: "500px",
     padding: "8px",
     borderRadius: "4px",
     border: "none",

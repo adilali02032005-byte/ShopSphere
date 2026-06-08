@@ -11,6 +11,7 @@ export default function Admin() {
     description: "",
     category: "",
     stock: "",
+    image: "",
   });
 
   const fetchProducts = async () => {
@@ -33,18 +34,25 @@ export default function Admin() {
       description: "",
       category: "",
       stock: "",
+      image: "",
     });
     setEditingId(null);
   };
 
   const createProduct = async () => {
-    await axios.post("/products", formData);
+    await axios.post("/products", {
+      ...formData,
+      images: formData.image ? [formData.image] : [],
+    });
     resetForm();
     fetchProducts();
   };
 
   const updateProduct = async () => {
-    await axios.put(`/products/${editingId}`, formData);
+    await axios.put(`/products/${editingId}`, {
+      ...formData,
+      images: formData.image ? [formData.image] : [],
+    });
     resetForm();
     fetchProducts();
   };
@@ -106,7 +114,10 @@ export default function Admin() {
                     style={styles.editBtn}
                     onClick={() => {
                       setEditingId(product._id);
-                      setFormData(product);
+                      setFormData({
+                        ...product,
+                        image: product.images?.[0] || "",
+                      });
                     }}
                   >
                     Edit

@@ -26,6 +26,19 @@ export default function ProductDetails() {
   return (
     <div style={styles.container}>
       <div style={styles.card}>
+        <img
+          src={product.images?.[0] || "https://via.placeholder.com/500"}
+          alt={product.name}
+          style={{
+            width: "100%",
+            height: "450px",
+            objectFit: "contain",
+            background: "#fff",
+            borderRadius: "10px",
+            marginBottom: "15px",
+          }}
+        />
+
         <h1>{product.name}</h1>
 
         <p style={styles.price}>₹{product.price}</p>

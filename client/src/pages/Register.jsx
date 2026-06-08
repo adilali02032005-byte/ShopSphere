@@ -95,19 +95,40 @@ export default function Register() {
 const styles = {
   page: {
     display: "flex",
-    height: "100vh",
+    minHeight: "100vh",
+    flexWrap: "wrap",
   },
 
   left: {
-    flex: 1,
+    flex: "1 1 400px",
+    minHeight: "250px",
     background: "#2874f0",
     color: "white",
     display: "flex",
     flexDirection: "column",
     justifyContent: "center",
     alignItems: "center",
+    padding: "30px",
+    textAlign: "center",
   },
 
+  right: {
+    flex: "1 1 400px",
+    display: "flex",
+    justifyContent: "center",
+    alignItems: "center",
+    background: "#f1f3f6",
+    padding: "20px",
+  },
+
+  card: {
+    background: "white",
+    padding: "30px",
+    borderRadius: "10px",
+    width: "100%",
+    maxWidth: "380px",
+    boxShadow: "0 4px 15px rgba(0,0,0,0.1)",
+  },
   logo: {
     fontSize: "34px",
     marginBottom: "10px",
@@ -115,22 +136,6 @@ const styles = {
 
   tagline: {
     opacity: 0.9,
-  },
-
-  right: {
-    flex: 1,
-    display: "flex",
-    justifyContent: "center",
-    alignItems: "center",
-    background: "#f1f3f6",
-  },
-
-  card: {
-    background: "white",
-    padding: "30px",
-    borderRadius: "8px",
-    width: "320px",
-    boxShadow: "0 2px 10px rgba(0,0,0,0.1)",
   },
 
   form: {
@@ -141,28 +146,31 @@ const styles = {
   },
 
   input: {
-    padding: "10px",
+    padding: "12px",
+    fontSize: "16px",
     border: "1px solid #ccc",
     borderRadius: "4px",
   },
 
-  registerBtn: {
-    padding: "10px",
+  loginBtn: {
+    padding: "12px",
+    minHeight: "48px",
     background: "#2874f0",
     color: "white",
     border: "none",
     borderRadius: "4px",
-    cursor: "pointer",
     fontWeight: "bold",
+    cursor: "pointer",
   },
 
-  loginBtn: {
-    padding: "10px",
+  registerBtn: {
+    padding: "12px",
+    minHeight: "48px",
     background: "white",
     color: "#2874f0",
     border: "1px solid #2874f0",
     borderRadius: "4px",
-    cursor: "pointer",
     fontWeight: "bold",
+    cursor: "pointer",
   },
 };
