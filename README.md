@@ -146,7 +146,7 @@ RAZORPAY_KEY_SECRET=your_key_secret
 
 Create a `.env` file inside the `client` folder:
 
-VITE_API_URL=https://your-render-backend.onrender.com/api
+VITE_API_URL=https://shopsphere-a8pv.onrender.com/api
 
 ---
 
@@ -168,13 +168,17 @@ npm run dev
 
 ## Screenshots
 
-![Home Page](assets/Home.png)
+![Home Page](assets/User-Home-Page.png)
 
-![Product Details](assets/ProductDetails.png)
+![Product Details](assets/Product-Details.png)
 
 ![Cart](assets/Cart.png)
 
-![Admin Dashboard](assets/AdminDashboard.png)
+![Checkout](assets/Checkout.png)
+
+![Admin Dashboard](assets/Admin-Home-Page.png)
+
+![Admin Product Editor](assets/Admin-Product-Page.png)
 
 ---
 
