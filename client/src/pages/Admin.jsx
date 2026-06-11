@@ -72,12 +72,16 @@ export default function Admin() {
           <h2>{editingId ? "Edit Product" : "Add Product"}</h2>
 
           <div style={styles.inputGroup}>
-            {["name", "price", "description", "category", "stock"].map(
+            {["name", "price", "description", "category", "stock", "image"].map(
               (field) => (
                 <input
                   key={field}
                   name={field}
-                  placeholder={field.toUpperCase()}
+                  placeholder={
+                    field === "image"
+                      ? "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSSKtDsGGh7hLviohukOzAkdiYJsxwVEoPhDA&s"
+                      : field.toUpperCase()
+                  }
                   value={formData[field]}
                   onChange={handleChange}
                   style={styles.input}
