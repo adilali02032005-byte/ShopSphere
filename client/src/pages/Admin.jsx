@@ -79,7 +79,7 @@ export default function Admin() {
                   name={field}
                   placeholder={
                     field === "image"
-                      ? "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSSKtDsGGh7hLviohukOzAkdiYJsxwVEoPhDA&s"
+                      ? "IMAGE URL"
                       : field.toUpperCase()
                   }
                   value={formData[field]}
